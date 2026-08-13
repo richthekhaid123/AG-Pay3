@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AG Pay</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#eef3f8;
+  color:#172033;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.app{
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  background:white;
+  padding-bottom:85px;
+}
+
+/* AUTH */
+
+.auth{
+  min-height:100vh;
+  background:#0757c8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.auth-box{
+  background:white;
+  width:100%;
+  max-width:400px;
+  padding:28px;
+  border-radius:22px;
+}
+
+.auth-logo{
+  text-align:center;
+  color:#0757c8;
+  font-size:34px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#777;
+  margin-bottom:25px;
+}
+
+.form-group{
+  margin-bottom:16px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  outline:none;
+  background:white;
+}
+
+input:focus,select:focus{
+  border-color:#0757c8;
+}
+
+.primary{
+  width:100%;
+  padding:15px;
+  background:#0757c8;
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.secondary{
+  width:100%;
+  padding:13px;
+  background:#eef5ff;
+  color:#0757c8;
+  border:0;
+  border-radius:10px;
+  font-weight:bold;
+  margin-top:10px;
+}
+
+.switch{
+  text-align:center;
+  color:#0757c8;
+  font-weight:bold;
+  margin-top:18px;
+  cursor:pointer;
+}
+
+/* HEADER */
+
+.header{
+  background:#0757c8;
+  color:white;
+  padding:25px 20px;
+  border-radius:0 0 25px 25px;
+}
+
+.logo{
+  font-size:27px;
+  font-weight:bold;
+}
+
+.welcome{
+  margin-top:8px;
+}
+
+.balance-label{
+  margin-top:25px;
+  font-size:14px;
+}
+
+.balance{
+  font-size:32px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+/* CONTENT */
+
+.content{
+  padding:20px;
+}
+
+.title{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.card{
+  background:#f5f7fa;
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:25px;
+}
+
+.action{
+  border:0;
+  background:#eef5ff;
+  color:#0757c8;
+  padding:18px 8px;
+  border-radius:15px;
+  font-weight:bold;
+}
+
+.action span{
+  display:block;
+  font-size:27px;
+  margin-bottom:7px;
+}
+
+/* TRANSACTIONS */
+
+.transaction{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+}
+
+.transaction-name{
+  font-weight:bold;
+}
+
+.date{
+  color:#888;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.income{
+  color:#078b45;
+  font-weight:bold;
+}
+
+.expense{
+  color:#d52d3d;
+  font-weight:bold;
+}
+
+.pending{
+  color:#d18a00;
+  font-weight:bold;
+}
+
+/* MESSAGE */
+
+.message{
+  display:none;
+  padding:12px;
+  background:#e7f8ee;
+  color:#087b3e;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+/* NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:480px;
+  background:white;
+  border-top:1px solid #ddd;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 2px;
+  box-shadow:0 -3px 10px rgba(0,0,0,.08);
+}
+
+.nav-btn{
+  border:0;
+  background:none;
+  color:#777;
+  font-size:11px;
+}
+
+.nav-btn span{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:#0757c8;
+  font-weight:bold;
+}
+
+/* PIN */
+
+.pin-box{
+  display:flex;
+  gap:8px;
+}
+
+.pin-box input{
+  text-align:center;
+  font-size:22px;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:20;
+}
+
+.modal-box{
+  background:white;
+  width:100%;
+  max-width:400px;
+  padding:22px;
+  border-radius:18px;
+}
+
+.receipt{
+  border:1px dashed #999;
+  padding:18px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+.receipt h3{
+  color:#0757c8;
+  margin-bottom:15px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUTH -->
+
+<div id="auth" class="auth">
+
+<div class="auth-box">
+
+<div class="auth-logo">AG Pay</div>
+
+<div class="subtitle">
+Simple payments. Smarter business.
+</div>
+
+<!-- LOGIN -->
+
+<div id="loginForm">
+
+<div class="form-group">
+<label>Email</label>
+<input id="loginEmail" type="email" placeholder="Enter email">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input id="loginPassword" type="password" placeholder="Enter password">
+</div>
+
+<button class="primary" onclick="login()">
+Login
+</button>
+
+<div class="switch" onclick="showSignup()">
+Create account
+</div>
+
+</div>
+
+
+<!-- SIGNUP -->
+
+<div id="signupForm" class="hidden">
+
+<div class="form-group">
+<label>Full Name</label>
+<input id="signupName" placeholder="Your name">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input id="signupEmail" type="email" placeholder="Your email">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input id="signupPassword" type="password" placeholder="Create password">
+</div>
+
+<button class="primary" onclick="signup()">
+Create Account
+</button>
+
+<div class="switch" onclick="showLogin()">
+Already have an account?
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- MAIN APP -->
+
+<div id="mainApp" class="app hidden">
+
+<!-- HOME -->
+
+<section id="home" class="page">
+
+<div class="header">
+
+<div class="logo">AG Pay</div>
+
+<div class="welcome">
+Welcome, <span id="welcomeName"></span> 👋
+</div>
+
+<div class="balance-label">
+Available Balance
+</div>
+
+<div class="balance">
+GH₵ <span id="balance">0.00</span>
+</div>
+
+</div>
+
+<div class="content">
+
+<div class="title">Quick Actions</div>
+
+<div class="actions">
+
+<button class="action" onclick="openPage('receive')">
+<span>💰</span>
+Receive
+</button>
+
+<button class="action" onclick="openPage('withdraw')">
+<span>💸</span>
+Withdraw
+</button>
+
+<button class="action" onclick="openPage('link')">
+<span>🔗</span>
+Payment Link
+</button>
+
+<button class="action" onclick="openPage('transactions')">
+<span>📊</span>
+History
+</button>
+
+</div>
+
+<div class="title">Recent Transactions</div>
+
+<div id="recentTransactions"></div>
+
+</div>
+
+</section>
+
+
+<!-- RECEIVE -->
+
+<section id="receive" class="page hidden">
+
+<div class="header">
+<div class="logo">Receive Money</div>
+</div>
+
+<div class="content">
+
+<div id="receiveMessage" class="message"></div>
+
+<div class="form-group">
+<label>Customer Name</label>
+<input id="receiveName" placeholder="Customer name">
+</div>
+
+<div class="form-group">
+<label>Amount (GH₵)</label>
+<input id="receiveAmount" type="number" min="1" placeholder="0.00">
+</div>
+
+<div class="form-group">
+<label>Customer Phone</label>
+<input id="receivePhone" type="tel" placeholder="Phone number">
+</div>
+
+<button class="primary" onclick="receiveMoney()">
+Record Payment
+</button>
+
+</div>
+
+</section>
+
+
+<!-- WITHDRAW -->
+
+<section id="withdraw" class="page hidden">
+
+<div class="header">
+<div class="logo">Withdraw Money</div>
+
+<div class="welcome">
+Available: GH₵ <span id="withdrawBalance"></span>
+</div>
+
+</div>
+
+<div class="content">
+
+<div id="withdrawMessage" class="message"></div>
+
+<div class="form-group">
+<label>Method</label>
+
+<select id="withdrawMethod">
+<option>Mobile Money</option>
+<option>Bank Account</option>
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Account / MoMo Number</label>
+<input id="withdrawNumber" placeholder="Enter number">
+</div>
+
+<div class="form-group">
+<label>Amount (GH₵)</label>
+<input id="withdrawAmount" type="number" min="1" placeholder="0.00">
+</div>
+
+<button class="primary" onclick="withdrawMoney()">
+Request Withdrawal
+</button>
+
+</div>
+
+</section>
+
+
+<!-- PAYMENT LINK -->
+
+<section id="link" class="page hidden">
+
+<div class="header">
+<div class="logo">Payment Link</div>
+</div>
+
+<div class="content">
+
+<div id="linkMessage" class="message"></div>
+
+<div class="form-group">
+<label>Amount (GH₵)</label>
+<input id="linkAmount" type="number" min="1" placeholder="0.00">
+</div>
+
+<div class="form-group">
+<label>Description</label>
+<input id="linkDescription" placeholder="Payment description">
+</div>
+
+<button class="primary" onclick="createLink()">
+Generate Link
+</button>
+
+<div id="linkResult" class="card hidden">
+
+<strong>Demo Payment Link</strong>
+
+<br><br>
+
+<input id="generatedLink" readonly>
+
+<button class="secondary" onclick="copyLink()">
+Copy Link
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TRANSACTIONS -->
+
+<section id="transactions" class="page hidden">
+
+<div class="header">
+<div class="logo">Transactions</div>
+</div>
+
+<div class="content">
+
+<div id="allTransactions"></div>
+
+</div>
+
+</section>
+
+
+<!-- RECEIPTS -->
+
+<section id="receipts" class="page hidden">
+
+<div class="header">
+<div class="logo">Receipts</div>
+</div>
+
+<div class="content">
+
+<div id="receiptsList"></div>
+
+</div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profile" class="page hidden">
+
+<div class="header">
+<div class="logo">Profile</div>
+</div>
+
+<div class="content">
+
+<div class="card">
+<h3 id="profileName"></h3>
+<p id="profileEmail"></p>
+</div>
+
+<div class="card">
+<strong>Account Type</strong>
+<p>AG Pay Business Account</p>
+</div>
+
+<button class="primary" onclick="openPage('settings')">
+Settings
+</button>
+
+<br><br>
+
+<button class="secondary" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settings" class="page hidden">
+
+<div class="header">
+<div class="logo">Settings</div>
+</div>
+
+<div class="content">
+
+<div class="card">
+<strong>Security PIN</strong>
+<p>Change your 4-digit AG Pay PIN.</p>
+
+<br>
+
+<button class="secondary" onclick="changePin()">
+Change PIN
+</button>
+</div>
+
+<div class="card">
+<strong>Notifications</strong>
+<p>Payment notifications are enabled.</p>
+</div>
+
+<div class="card">
+<strong>About AG Pay</strong>
+<p>Simple payments. Smarter business.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+
+<button class="nav-btn active"
+onclick="openPage('home',this)">
+<span>🏠</span>
+Home
+</button>
+
+<button class="nav-btn"
+onclick="openPage('receive',this)">
+<span>💰</span>
+Receive
+</button>
+
+<button class="nav-btn"
+onclick="openPage('withdraw',this)">
+<span>💸</span>
+Withdraw
+</button>
+
+<button class="nav-btn"
+onclick="openPage('transactions',this)">
+<span>📊</span>
+History
+</button>
+
+<button class="nav-btn"
+onclick="openPage('profile',this)">
+<span>👤</span>
+Profile
+</button>
+
+</nav>
+
+</div>
+
+
+<!-- PIN MODAL -->
+
+<div id="pinModal" class="modal hidden">
+
+<div class="modal-box">
+
+<h3>Enter AG Pay PIN</h3>
+
+<br>
+
+<div class="pin-box">
+
+<input id="pin1" maxlength="1" type="password">
+<input id="pin2" maxlength="1" type="password">
+<input id="pin3" maxlength="1" type="password">
+<input id="pin4" maxlength="1" type="password">
+
+</div>
+
+<br>
+
+<button class="primary" onclick="verifyPin()">
+Continue
+</button>
+
+</div>
+
+</div>
+
+
+<!-- RECEIPT MODAL -->
+
+<div id="receiptModal" class="modal hidden">
+
+<div class="modal-box">
+
+<div class="receipt">
+
+<h3>AG Pay Receipt</h3>
+
+<div class="row">
+<span>Customer</span>
+<strong id="rCustomer"></strong>
+</div>
+
+<div class="row">
+<span>Amount</span>
+<strong>GH₵ <span id="rAmount"></span></strong>
+</div>
+
+<div class="row">
+<span>Type</span>
+<strong id="rType"></strong>
+</div>
+
+<div class="row">
+<span>Date</span>
+<strong id="rDate"></strong>
+</div>
+
+<div class="row">
+<span>Status</span>
+<strong>Successful</strong>
+</div>
+
+</div>
+
+<button class="primary" onclick="closeReceipt()">
+Close
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   DATA
+================================ */
+
+let user =
+JSON.parse(localStorage.getItem("agpayUser")) || null;
+
+let balance =
+parseFloat(localStorage.getItem("agpayBalance")) || 0;
+
+let transactions =
+JSON.parse(localStorage.getItem("agpayTransactions")) || [];
+
+let receipts =
+JSON.parse(localStorage.getItem("agpayReceipts")) || [];
+
+
+/* ================================
+   SAVE DATA
+================================ */
+
+function saveData(){
+
+localStorage.setItem(
+"agpayUser",
+JSON.stringify(user)
+);
+
+localStorage.setItem(
+"agpayBalance",
+balance
+);
+
+localStorage.setItem(
+"agpayTransactions",
+JSON.stringify(transactions)
+);
+
+localStorage.setItem(
+"agpayReceipts",
+JSON.stringify(receipts)
+);
+
+}
+
+
+/* ================================
+   AUTH
+================================ */
+
+function showSignup(){
+
+document.getElementById("loginForm")
+.classList.add("hidden");
+
+document.getElementById("signupForm")
+.classList.remove("hidden");
+
+}
+
+
+function showLogin(){
+
+document.getElementById("signupForm")
+.classList.add("hidden");
+
+document.getElementById("loginForm")
+.classList.remove("hidden");
+
+}
+
+
+function signup(){
+
+let name =
+document.getElementById("signupName").value.trim();
+
+let email =
+document.getElementById("signupEmail").value.trim();
+
+let password =
+document.getElementById("signupPassword").value;
+
+if(!name || !email || !password){
+
+alert("Complete all fields.");
+
+return;
+
+}
+
+if(password.length < 6){
+
+alert("Password must be at least 6 characters.");
+
+return;
+
+}
+
+user = {
+
+name:name,
+email:email,
+password:password,
+pin:"1234"
+
+};
+
+balance = 1000;
+
+transactions = [];
+
+receipts = [];
+
+saveData();
+
+alert(
+"Account created! Your demo PIN is 1234. Change it in Settings."
+);
+
+showLogin();
+
+}
+
+
+/* ================================
+   LOGIN
+================================ */
+
+function login(){
+
+if(!user){
+
+alert("Create an account first.");
+
+return;
+
+}
+
+let email =
+document.getElementById("loginEmail").value.trim();
+
+let password =
+document.getElementById("loginPassword").value;
+
+if(email !== user.email ||
+password !== user.password){
+
+alert("Incorrect email or password.");
+
+return;
+
+}
+
+document.getElementById("auth")
+.classList.add("hidden");
+
+document.getElementById("mainApp")
+.classList.remove("hidden");
+
+loadUser();
+
+}
+
+
+/* ================================
+   LOAD USER
+================================ */
+
+function loadUser(){
+
+document.getElementById("welcomeName")
+.innerText = user.name;
+
+document.getElementById("profileName")
+.innerText = user.name;
+
+document.getElementById("profileEmail")
+.innerText = user.email;
+
+render();
+
+}
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+function logout(){
+
+document.getElementById("mainApp")
+.classList.add("hidden");
+
+document.getElementById("auth")
+.classList.remove("hidden");
+
+}
+
+
+/* ================================
+   NAVIGATION
+================================ */
+
+function openPage(page,button){
+
+document.querySelectorAll(".page")
+.forEach(function(p){
+
+p.classList.add("hidden");
+
+});
+
+document.getElementById(page)
+.classList.remove("hidden");
+
+document.querySelectorAll(".nav-btn")
+.forEach(function(b){
+
+b.classList.remove("active");
+
+});
+
+if(button){
+
+button.classList.add("active");
+
+}
+
+render();
+
+}
+
+
+/* ================================
+   RECEIVE
+================================ */
+
+function receiveMoney(){
+
+let name =
+document.getElementById("receiveName").value.trim();
+
+let amount =
+parseFloat(
+document.getElementById("receiveAmount").value
+);
+
+let phone =
+document.getElementById("receivePhone").value.trim();
+
+if(!name || !amount || !phone){
+
+alert("Complete all fields.");
+
+return;
+
+}
+
+if(amount <= 0){
+
+alert("Enter a valid amount.");
+
+return;
+
+}
+
+balance += amount;
+
+let date =
+new Date().toLocaleString();
+
+transactions.unshift({
+
+name:name,
+
+amount:amount,
+
+type:"received",
+
+status:"successful",
+
+date:date
+
+});
+
+receipts.unshift({
+
+name:name,
+
+amount:amount,
+
+type:"Payment Received",
+
+date:date
+
+});
+
+saveData();
+
+document.getElementById("receiveMessage")
+.style.display="block";
+
+document.getElementById("receiveMessage")
+.innerText =
+"GH₵ "+amount.toFixed(2)+
+" recorded successfully in demo mode.";
+
+document.getElementById("receiveName").value="";
+document.getElementById("receiveAmount").value="";
+document.getElementById("receivePhone").value="";
+
+render();
+
+}
+
+
+/* ================================
+   WITHDRAW
+================================ */
+
+function withdrawMoney(){
+
+let method =
+document.getElementById("withdrawMethod").value;
+
+let number =
+document.getElementById("withdrawNumber").value.trim();
+
+let amount =
+parseFloat(
+document.getElementById("withdrawAmount").value
+);
+
+if(!number || !amount){
+
+alert("Complete all fields.");
+
+return;
+
+}
+
+if(amount <= 0){
+
+alert("Enter a valid amount.");
+
+return;
+
+}
+
+if(amount > balance){
+
+alert("Insufficient balance.");
+
+return;
+
+}
+
+balance -= amount;
+
+let date =
+new Date().toLocaleString();
+
+transactions.unshift({
+
+name:method+" Withdrawal",
+
+amount:amount,
+
+type:"withdrawal",
+
+status:"successful",
+
+date:date
+
+});
+
+saveData();
+
+document.getElementById("withdrawMessage")
+.style.display="block";
+
+document.getElementById("withdrawMessage")
+.innerText =
+"GH₵ "+amount.toFixed(2)+
+" withdrawal recorded in demo mode.";
+
+document.getElementById("withdrawNumber").value="";
+document.getElementById("withdrawAmount").value="";
+
+render();
+
+}
+
+
+/* ================================
+   PAYMENT LINK
+================================ */
+
+function createLink(){
+
+let amount =
+parseFloat(
+document.getElementById("linkAmount").value
+);
+
+let description =
+document.getElementById("linkDescription").value;
+
+if(!amount){
+
+alert("Enter an amount.");
+
+return;
+
+}
+
+let random =
+Math.random()
+.toString(36)
+.substring(2,10);
+
+let link =
+"https://agpay.example/pay/"+random;
+
+document.getElementById("generatedLink")
+.value=link;
+
+document.getElementById("linkResult")
+.classList.remove("hidden");
+
+document.getElementById("linkMessage")
+.style.display="block";
+
+document.getElementById("linkMessage")
+.innerText =
+"Demo payment link created.";
+
+}
+
+
+function copyLink(){
+
+let value =
+document.getElementById("generatedLink").value;
+
+if(navigator.clipboard){
+
+navigator.clipboard.writeText(value);
+
+alert("Payment link copied!");
+
+}else{
+
+alert("Copy the link manually.");
+
+}
+
+}
+
+
+/* ================================
+   CHANGE PIN
+================================ */
+
+function changePin(){
+
+let newPin =
+prompt("Enter a new 4-digit PIN:");
+
+if(!newPin){
+
+return;
+
+}
+
+if(!/^[0-9]{4}$/.test(newPin)){
+
+alert("PIN must contain exactly 4 numbers.");
+
+return;
+
+}
+
+user.pin = newPin;
+
+saveData();
+
+alert("Your AG Pay PIN has been changed.");
+
+}
+
+
+/* ================================
+   PIN
+================================ */
+
+function verifyPin(){
+
+let pin =
+document.getElementById("pin1").value+
+document.getElementById("pin2").value+
+document.getElementById("pin3").value+
+document.getElementById("pin4").value;
+
+if(!user || pin !== user.pin){
+
+alert("Incorrect PIN.");
+
+return;
+
+}
+
+document.getElementById("pinModal")
+.classList.add("hidden");
+
+}
+
+
+/* ================================
+   RECEIPTS
+================================ */
+
+function showReceipt(index){
+
+let r = receipts[index];
+
+document.getElementById("rCustomer")
+.innerText=r.name;
+
+document.getElementById("rAmount")
+.innerText=r.amount.toFixed(2);
+
+document.getElementById("rType")
+.innerText=r.type;
+
+document.getElementById("rDate")
+.innerText=r.date;
+
+document.getElementById("receiptModal")
+.classList.remove("hidden");
+
+}
+
+
+function closeReceipt(){
+
+document.getElementById("receiptModal")
+.classList.add("hidden");
+
+}
+
+
+/* ================================
+   RENDER
+================================ */
+
+function render(){
+
+document.getElementById("balance")
+.innerText=balance.toFixed(2);
+
+document.getElementById("withdrawBalance")
+.innerText=balance.toFixed(2);
+
+
+/* RECENT */
+
+let recent =
+document.getElementById("recentTransactions");
+
+recent.innerHTML="";
+
+if(transactions.length===0){
+
+recent.innerHTML=
+"<div class='card'>No transactions yet.</div>";
+
+}
+
+transactions.slice(0,5)
+.forEach(function(t){
+
+let received =
+t.type==="received";
+
+recent.innerHTML += `
+
+<div class="transaction">
+
+<div>
+
+<div class="transaction-name">
+${t.name}
+</div>
+
+<div class="date">
+${t.date}
+</div>
+
+</div>
+
+<div class="${received?'income':'expense'}">
+${received?'+':'-'}
+GH₵ ${t.amount.toFixed(2)}
+</div>
+
+</div>
+
+`;
+
+});
+
+
+/* ALL TRANSACTIONS */
+
+let all =
+document.getElementById("allTransactions");
+
+all.innerHTML="";
+
+if(transactions.length===0){
+
+all.innerHTML=
+"<div class='card'>No transactions yet.</div>";
+
+}
+
+transactions.forEach(function(t){
+
+let received =
+t.type==="received";
+
+all.innerHTML += `
+
+<div class="transaction">
+
+<div>
+
+<div class="transaction-name">
+${t.name}
+</div>
+
+<div class="date">
+${t.date}
+</div>
+
+</div>
+
+<div class="${received?'income':'expense'}">
+${received?'+':'-'}
+GH₵ ${t.amount.toFixed(2)}
+</div>
+
+</div>
+
+`;
+
+});
+
+
+/* RECEIPTS */
+
+let list =
+document.getElementById("receiptsList");
+
+list.innerHTML="";
+
+if(receipts.length===0){
+
+list.innerHTML=
+"<div class='card'>No receipts yet.</div>";
+
+}
+
+receipts.forEach(function(r,index){
+
+list.innerHTML += `
+
+<div class="card">
+
+<strong>${r.type}</strong>
+
+<p>${r.name}</p>
+
+<p>GH₵ ${r.amount.toFixed(2)}</p>
+
+<div class="date">
+${r.date}
+</div>
+
+<button class="secondary"
+onclick="showReceipt(${index})">
+
+View Receipt
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* ================================
+   AUTO LOGIN SCREEN
+================================ */
+
+if(user){
+
+/*
+  We intentionally do not auto-login.
+  User must enter password.
+*/
+
+}
+
+</script>
+
+</body>
+</html>
